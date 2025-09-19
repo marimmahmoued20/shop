@@ -13,7 +13,7 @@
       background: #fff5f8;
     }
 
-    /* 🌸 ناف بار */
+    
     .navbar {
       background: #ffcce0;
       padding: 15px 20px;
@@ -96,7 +96,6 @@
       right: -5px;
     }
 
-    /* 🌸 المنتجات */
     section {
       display: flex;
       flex-wrap: wrap;
@@ -171,7 +170,7 @@
 </head>
 <body>
 
-  <!-- 🌸 الناف بار -->
+
   <nav class="navbar">
     <div class="container">
       <a class="navbar-brand" href="#">MyShop</a>
@@ -197,16 +196,16 @@
     </div>
   </nav>
 
-  <!-- 🌸 المنتجات -->
+ 
   <section></section>
 
   <script>
-    // تفعيل قائمة الموبايل
+    
     document.querySelector('.menu-toggle').addEventListener('click', () => {
       document.querySelector('.nav-content').classList.toggle('active');
     });
 
-    // تفعيل تغيير لون اللينك المختار
+   
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', (e) => {
         document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -214,11 +213,10 @@
       });
     });
 
-    // عداد السلة
     let cartCount = 0;
     const cartBadge = document.querySelector('.cart-badge');
 
-    // جلب المنتجات
+  
     fetch('https://fakestoreapi.com/products')
       .then(res => res.json())
       .then(data => {
@@ -236,7 +234,7 @@
         }
         document.querySelector('section').innerHTML = output;
 
-        // ربط الأزرار بزيادة العدّاد
+      
         document.querySelectorAll('.add-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             cartCount++;
