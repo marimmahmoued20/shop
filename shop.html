@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Shop</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #fff5f8;
+    }
+
+    /* 🌸 ناف بار */
+    .navbar {
+      background: #ffcce0;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff6699;
+      text-decoration: none;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .nav-content {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #ff6699;
+      font-weight: 500;
+      transition: 0.3s;
+      position: relative;
+    }
+    .nav-links a.active {
+      color: #fff;
+      background: #ff6699;
+      padding: 5px 10px;
+      border-radius: 15px;
+    }
+    .search-form input {
+      padding: 5px 10px;
+      border-radius: 15px;
+      border: 1px solid #ffcce0;
+    }
+    .search-form button {
+      padding: 5px 10px;
+      background: #ff99bb;
+      border: none;
+      border-radius: 15px;
+      color: white;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .cart-btn {
+      background: none;
+      border: none;
+      position: relative;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .cart-badge {
+      background: #ff6699;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+    }
+
+    /* 🌸 المنتجات */
+    section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 30px 10px;
+    }
+    section > div {
+      width: 220px;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    section img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background: #ffe6ef;
+    }
+    section h1 {
+      font-size: 1rem;
+      color: #ff6699;
+      padding: 10px 5px 5px;
+    }
+    section p {
+      color: #444;
+      padding-bottom: 10px;
+    }
+    .add-btn {
+      background: #ff99bb;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      color: white;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .add-btn:hover {
+      background: #ff6699;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-content {
+        display: none;
+        flex-direction: column;
+        background: #ffcce0;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+      .nav-content.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌸 الناف بار -->
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand" href="#">MyShop</a>
+      <button class="menu-toggle">☰</button>
+
+      <div class="nav-content">
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <form class="search-form">
+            <input type="text" placeholder="Search">
+            <button type="submit">Search</button>
+          </form>
+          <button class="cart-btn">
+            🛒<span class="cart-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 🌸 المنتجات -->
+  <section></section>
+
+  <script>
+    // تفعيل قائمة الموبايل
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      document.querySelector('.nav-content').classList.toggle('active');
+    });
+
+    // تفعيل تغيير لون اللينك المختار
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        e.target.classList.add('active');
+      });
+    });
+
+    // عداد السلة
+    let cartCount = 0;
+    const cartBadge = document.querySelector('.cart-badge');
+
+    // جلب المنتجات
+    fetch('https://fakestoreapi.com/products')
+      .then(res => res.json())
+      .then(data => {
+        let output = '';
+        for (let i = 0; i < data.length; i++) {
+          output += `
+            <div style="animation-delay: ${i * 0.1}s">
+              <img src="${data[i].image}" alt="${data[i].title}">
+              <h1>${data[i].title}</h1>
+              <p>$${data[i].price}</p>
+              <button class ="add-btn">add to card</button>
+           
+            </div>
+          `;
+        }
+        document.querySelector('section').innerHTML = output;
+
+        // ربط الأزرار بزيادة العدّاد
+        document.querySelectorAll('.add-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            cartCount++;
+            cartBadge.textContent = cartCount;
+            btn.textContent = "add";
+          
+            btn.disabled = true;
+            btn.style.background = "#ccc";
+          });
+        });
+      });
+  </script>
+
+</body>
+</html>
